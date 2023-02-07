@@ -33,18 +33,36 @@ function render(variables = {}) {
   document.querySelector("#widget_content").innerHTML = `<div class="widget">
             ${cover}
           <img src="${variables.avatarURL}" class="photo" />
-          <h1>Lucy Boilett</h1>
-          <h2>Web Developer</h2>
-          <h3>Miami, USA</h3>
-          <ul class="position-right">
-            <li><a href="https://twitter.com/4geeksacademy"><i class="fab fa-twitter"></i></a></li>
-            <li><a href="https://github.com/4geeksacademy"><i class="fab fa-github"></i></a></li>
-            <li><a href="https://linkedin.com/4geeksacademy"><i class="fab fa-linkedin"></i></a></li>
-            <li><a href="https://instagram.com/4geeksacademy"><i class="fab fa-instagram"></i></a></li>
+          <h1>${getName(variables)}</h1>
+          <h2>${variables.role ? variables.role : "Choose role"}</h2>
+          <h3>${variables.city ? variables.city : "Choose city"}</h3>
+          <ul class="${variables.socialMediaPosition}">
+            <li><a href="https://twitter.com/${
+              variables.twitter
+            }" target="_blank"><i class="fab fa-twitter"></i></a></li>
+            <li><a href="https://github.com/${
+              variables.github
+            }"><i class="fab fa-github"></i></a></li>
+            <li><a href="https://linkedin.com/${
+              variables.linkedin
+            }"><i class="fab fa-linkedin"></i></a></li>
+            <li><a href="https://instagram.com/${
+              variables.instagram
+            }"><i class="fab fa-instagram"></i></a></li>
           </ul>
+          <h3>${variables.country ? variables.country : "Choose city"}</h3>
+
         </div>
     `;
 }
+
+const getName = variables => {
+  if (!variables.name && !variables.lastname) return "Insert name";
+  else
+    return `${variables.name || ""}${
+      variables.lastname ? " " + variables.lastname : ""
+    }`;
+};
 
 /**
  * Don't change any of the lines below, here is where we do the logic for the dropdowns
@@ -60,10 +78,10 @@ window.onload = function() {
     // social media bar position (left or right)
     socialMediaPosition: "position-left",
     // social media usernames
-    twitter: null,
-    github: "alesanchezr",
-    linkedin: null,
-    instagram: null,
+    twitter: "home",
+    github: "frederico2191",
+    linkedin: "home",
+    instagram: "home",
     name: null,
     lastname: null,
     role: null,
@@ -72,10 +90,10 @@ window.onload = function() {
   };
   render(window.variables); //render the card for the first time
 
-  document.querySelectorAll(".picker").forEach(function(elm) {
-    elm.addEventListener("change", function(e) {
+  document.querySelectorAll(".picker").forEach(function(element) {
+    element.addEventListener("change", function(event) {
       // <- add a listener to every input
-      const attribute = e.target.getAttribute("for"); // when any input changes, collect the value
+      const attribute = event.target.getAttribute("for"); // when any input changes, collect the value
       let values = {};
       values[attribute] =
         this.value == "" || this.value == "null"
